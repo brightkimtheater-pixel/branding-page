@@ -65,12 +65,14 @@ if (form) {
     }
   };
 
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
     formNote.textContent = "";
+    formNote.classList.remove("form-note-error");
 
     const name = document.getElementById("name").value.trim();
     const phone = document.getElementById("phone").value.trim();
+    const email = document.getElementById("email").value.trim();
     const message = document.getElementById("message").value.trim();
 
     let valid = true;
@@ -98,8 +100,23 @@ if (form) {
 
     if (!valid) return;
 
-    // 실제 서비스 시 이 부분을 이메일 전송 API(Formspree 등)나
-    // 서버 엔드포인트 호출로 교체해야 합니다.
+    const submitBtn = form.querySelector("button[type=submit]");
+    submitBtn.disabled = true;
+    submitBtn.textContent = "보내는 중...";
+
+    const { error } = await supabaseClient.from("inquiries").insert([
+      { name, phone, email: email || null, message },
+    ]);
+
+    submitBtn.disabled = false;
+    submitBtn.textContent = "문의 보내기";
+
+    if (error) {
+      formNote.classList.add("form-note-error");
+      formNote.textContent = "문의 전송에 실패했습니다. 잠시 후 다시 시도해 주세요.";
+      return;
+    }
+
     formNote.textContent = "문의가 접수되었습니다. 빠른 시일 내에 연락드리겠습니다.";
     form.reset();
   });

@@ -526,6 +526,84 @@ em { font-style: normal; color: var(--coral); }
   font-weight: 700;
   min-height: 1.2em;
 }
+.form-note-error { color: #c0392b; }
+
+/* ---------- admin ---------- */
+.admin-login {
+  max-width: 420px;
+  background: var(--cream);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  border: 1px solid var(--border);
+}
+.admin-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.admin-panel-head .section-sub { margin: 0; }
+.inquiry-list { display: flex; flex-direction: column; gap: 16px; }
+.inquiry-empty {
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+.inquiry-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 22px 26px;
+}
+.inquiry-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+.inquiry-card-head strong {
+  font-size: 1.02rem;
+  margin-right: 10px;
+}
+.inquiry-card-head span {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  margin-right: 10px;
+}
+.inquiry-badge {
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+.inquiry-badge-unread {
+  background: #fbe6da;
+  color: var(--coral-dark);
+}
+.inquiry-badge-read {
+  background: var(--teal-light);
+  color: var(--teal);
+}
+.inquiry-message {
+  font-size: 0.95rem;
+  color: var(--ink);
+  margin: 0 0 16px;
+  white-space: pre-wrap;
+}
+.inquiry-card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+}
+.inquiry-date {
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+}
 
 /* footer */
 .footer {
