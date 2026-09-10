@@ -121,3 +121,95 @@ if (form) {
     form.reset();
   });
 }
+
+// 사전 등록 모달 (모든 페이지 상단바에 존재)
+const preRegisterBtn = document.getElementById("preRegisterBtn");
+const preRegisterOverlay = document.getElementById("preRegisterOverlay");
+
+if (preRegisterBtn && preRegisterOverlay) {
+  const preRegisterClose = document.getElementById("preRegisterClose");
+  const preRegisterForm = document.getElementById("preRegisterForm");
+  const preRegNote = document.getElementById("preRegNote");
+
+  const setPreRegError = (id, message) => {
+    const field = document.getElementById(id);
+    const err = document.getElementById("err-" + id);
+    if (message) {
+      field.classList.add("invalid");
+      err.textContent = message;
+    } else {
+      field.classList.remove("invalid");
+      err.textContent = "";
+    }
+  };
+
+  const openPreRegisterModal = () => {
+    preRegisterOverlay.hidden = false;
+  };
+
+  const closePreRegisterModal = () => {
+    preRegisterOverlay.hidden = true;
+    preRegisterForm.reset();
+    preRegNote.textContent = "";
+    preRegNote.classList.remove("form-note-error");
+    setPreRegError("preRegName", "");
+    setPreRegError("preRegDate", "");
+  };
+
+  preRegisterBtn.addEventListener("click", openPreRegisterModal);
+  preRegisterClose.addEventListener("click", closePreRegisterModal);
+  preRegisterOverlay.addEventListener("click", (e) => {
+    if (e.target === preRegisterOverlay) closePreRegisterModal();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !preRegisterOverlay.hidden) closePreRegisterModal();
+  });
+
+  preRegisterForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    preRegNote.textContent = "";
+    preRegNote.classList.remove("form-note-error");
+
+    const name = document.getElementById("preRegName").value.trim();
+    const date = document.getElementById("preRegDate").value;
+
+    let valid = true;
+
+    if (!name) {
+      setPreRegError("preRegName", "이름을 입력해 주세요.");
+      valid = false;
+    } else {
+      setPreRegError("preRegName", "");
+    }
+
+    if (!date) {
+      setPreRegError("preRegDate", "날짜를 선택해 주세요.");
+      valid = false;
+    } else {
+      setPreRegError("preRegDate", "");
+    }
+
+    if (!valid) return;
+
+    const submitBtn = preRegisterForm.querySelector("button[type=submit]");
+    submitBtn.disabled = true;
+    submitBtn.textContent = "등록하는 중...";
+
+    const { error } = await supabaseClient
+      .from("pre_registrations")
+      .insert([{ name, register_date: date }]);
+
+    submitBtn.disabled = false;
+    submitBtn.textContent = "등록하기";
+
+    if (error) {
+      preRegNote.classList.add("form-note-error");
+      preRegNote.textContent = "등록에 실패했습니다. 잠시 후 다시 시도해 주세요.";
+      return;
+    }
+
+    preRegNote.textContent = "사전 등록이 완료되었습니다.";
+    preRegisterForm.reset();
+    setTimeout(closePreRegisterModal, 1200);
+  });
+}

@@ -21,7 +21,10 @@
       <a href="reviews.html" data-page="reviews">후기</a>
       <a href="contact.html" data-page="contact">연락처</a>
     </nav>
-    <a href="contact.html" class="btn btn-primary btn-sm nav-cta">상담 신청</a>
+    <div class="nav-cta-group">
+      <a href="contact.html" class="btn btn-primary btn-sm">상담 신청</a>
+      <button type="button" class="btn btn-outline btn-sm" id="preRegisterBtn">사전 등록</button>
+    </div>
     <button class="hamburger" id="hamburger" aria-label="메뉴 열기">
       <span></span><span></span><span></span>
     </button>
@@ -84,6 +87,28 @@
     <span class="footer-note">이 페이지는 예시 콘텐츠로 제작되었습니다.</span>
   </div>
 </footer>
+
+<div class="modal-overlay" id="preRegisterOverlay" hidden>
+  <div class="modal-card">
+    <button type="button" class="modal-close" id="preRegisterClose" aria-label="닫기">&times;</button>
+    <h3>사전 등록</h3>
+    <p class="modal-sub">이름과 희망 날짜를 입력해 주세요.</p>
+    <form id="preRegisterForm" novalidate>
+      <div class="form-row">
+        <label for="preRegName">이름 <em>*</em></label>
+        <input type="text" id="preRegName" name="preRegName" placeholder="홍길동">
+        <span class="error-msg" id="err-preRegName"></span>
+      </div>
+      <div class="form-row">
+        <label for="preRegDate">날짜 <em>*</em></label>
+        <input type="date" id="preRegDate" name="preRegDate">
+        <span class="error-msg" id="err-preRegDate"></span>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">등록하기</button>
+      <p class="form-note" id="preRegNote"></p>
+    </form>
+  </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="supabase-config.js"></script>

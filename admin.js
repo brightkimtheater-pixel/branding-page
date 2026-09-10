@@ -5,6 +5,8 @@ const loginNote = document.getElementById("loginNote");
 const logoutBtn = document.getElementById("logoutBtn");
 const inquiryList = document.getElementById("inquiryList");
 const inquiryCount = document.getElementById("inquiryCount");
+const preregList = document.getElementById("preregList");
+const preregCount = document.getElementById("preregCount");
 
 function formatDate(iso) {
   const d = new Date(iso);
@@ -84,10 +86,124 @@ async function loadInquiries() {
   renderInquiries(data);
 }
 
+function formatDateOnly(dateStr) {
+  const d = new Date(dateStr + "T00:00:00");
+  return d.toLocaleDateString("ko-KR", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    weekday: "short",
+  });
+}
+
+function renderPreregCard(row) {
+  return `
+    <div class="prereg-card" data-id="${row.id}">
+      <div class="prereg-info">
+        <strong>${escapeHtml(row.name)}</strong>
+        <span>${formatDateOnly(row.register_date)}</span>
+      </div>
+      <div class="prereg-actions">
+        <button type="button" class="btn btn-outline btn-sm prereg-edit-btn">수정</button>
+        <button type="button" class="btn btn-outline btn-sm prereg-delete-btn">삭제</button>
+      </div>
+    </div>
+  `;
+}
+
+function renderPreregEditCard(row) {
+  return `
+    <div class="prereg-card" data-id="${row.id}">
+      <div class="prereg-edit-row">
+        <input type="text" class="prereg-edit-name" value="${escapeHtml(row.name)}">
+        <input type="date" class="prereg-edit-date" value="${row.register_date}">
+      </div>
+      <div class="prereg-actions">
+        <button type="button" class="btn btn-primary btn-sm prereg-save-btn">저장</button>
+        <button type="button" class="btn btn-outline btn-sm prereg-cancel-btn">취소</button>
+      </div>
+    </div>
+  `;
+}
+
+function attachPreregCardEvents(row) {
+  const card = preregList.querySelector(`.prereg-card[data-id="${row.id}"]`);
+  if (!card) return;
+
+  const editBtn = card.querySelector(".prereg-edit-btn");
+  if (editBtn) {
+    editBtn.addEventListener("click", () => {
+      card.outerHTML = renderPreregEditCard(row);
+      attachPreregCardEvents(row);
+    });
+  }
+
+  const deleteBtn = card.querySelector(".prereg-delete-btn");
+  if (deleteBtn) {
+    deleteBtn.addEventListener("click", async () => {
+      if (!confirm(`${row.name}님의 사전 등록을 삭제할까요?`)) return;
+      deleteBtn.disabled = true;
+      await supabaseClient.from("pre_registrations").delete().eq("id", row.id);
+      loadPreregistrations();
+    });
+  }
+
+  const saveBtn = card.querySelector(".prereg-save-btn");
+  if (saveBtn) {
+    saveBtn.addEventListener("click", async () => {
+      const name = card.querySelector(".prereg-edit-name").value.trim();
+      const date = card.querySelector(".prereg-edit-date").value;
+      if (!name || !date) return;
+      saveBtn.disabled = true;
+      await supabaseClient
+        .from("pre_registrations")
+        .update({ name, register_date: date })
+        .eq("id", row.id);
+      loadPreregistrations();
+    });
+  }
+
+  const cancelBtn = card.querySelector(".prereg-cancel-btn");
+  if (cancelBtn) {
+    cancelBtn.addEventListener("click", () => {
+      card.outerHTML = renderPreregCard(row);
+      attachPreregCardEvents(row);
+    });
+  }
+}
+
+function renderPreregistrations(rows) {
+  if (!rows.length) {
+    preregList.innerHTML = '<p class="inquiry-empty">아직 사전 등록이 없습니다.</p>';
+    preregCount.textContent = "";
+    return;
+  }
+
+  preregCount.textContent = `총 ${rows.length}건`;
+  preregList.innerHTML = rows.map(renderPreregCard).join("");
+  rows.forEach(attachPreregCardEvents);
+}
+
+async function loadPreregistrations() {
+  preregList.innerHTML = '<p class="inquiry-empty">불러오는 중...</p>';
+  const { data, error } = await supabaseClient
+    .from("pre_registrations")
+    .select("*")
+    .order("register_date", { ascending: true });
+
+  if (error) {
+    preregList.innerHTML = '<p class="inquiry-empty">사전 등록 목록을 불러오지 못했습니다.</p>';
+    return;
+  }
+
+  renderPreregistrations(data);
+}
+
 function showAdminPanel() {
   authGate.hidden = true;
   adminPanel.hidden = false;
   loadInquiries();
+  loadPreregistrations();
 }
 
 function showLoginForm() {
