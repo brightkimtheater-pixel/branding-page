@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>연락처 &amp; 상담 신청 | 조인식</title>
+<meta name="description" content="조인식 강사 수업 문의 및 상담 신청.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="contact">
+
+<div class="topbar" id="topbar">
+  <div class="wrap topbar-inner">
+    <a href="index.html" class="logo">조인식<span>선생님</span></a>
+    <nav class="nav" id="nav">
+      <a href="about.html" data-page="about">소개</a>
+      <a href="services.html" data-page="services">강의</a>
+      <a href="reviews.html" data-page="reviews">후기</a>
+      <a href="contact.html" data-page="contact">연락처</a>
+    </nav>
+    <a href="contact.html" class="btn btn-primary btn-sm nav-cta">상담 신청</a>
+    <button class="hamburger" id="hamburger" aria-label="메뉴 열기">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</div>
+
+<div class="mobile-nav" id="mobileNav">
+  <a href="about.html" data-page="about">소개</a>
+  <a href="services.html" data-page="services">강의</a>
+  <a href="reviews.html" data-page="reviews">후기</a>
+  <a href="contact.html" data-page="contact">연락처</a>
+</div>
+
+<main>
+  <section class="section section-first section-contact" id="contact">
+    <div class="wrap contact-grid">
+      <div class="contact-info">
+        <p class="section-eyebrow">CONTACT</p>
+        <h2 class="section-title">수업 문의 및 상담 신청</h2>
+        <p class="section-sub">
+          강의 일정, 프로그램 구성, 비용 등 궁금하신 점을 남겨주시면<br>
+          빠르게 답변드리겠습니다.
+        </p>
+        <ul class="contact-list">
+          <li><span>이메일</span>example@email.com</li>
+          <li><span>전화</span>010-0000-0000</li>
+          <li><span>활동 지역</span>전국 (지역별 협의 가능)</li>
+        </ul>
+      </div>
+      <form class="contact-form" id="contactForm" novalidate>
+        <div class="form-row">
+          <label for="name">이름 <em>*</em></label>
+          <input type="text" id="name" name="name" placeholder="홍길동">
+          <span class="error-msg" id="err-name"></span>
+        </div>
+        <div class="form-row">
+          <label for="phone">연락처 <em>*</em></label>
+          <input type="tel" id="phone" name="phone" placeholder="010-0000-0000">
+          <span class="error-msg" id="err-phone"></span>
+        </div>
+        <div class="form-row">
+          <label for="email">이메일</label>
+          <input type="email" id="email" name="email" placeholder="name@email.com">
+        </div>
+        <div class="form-row">
+          <label for="message">문의 내용 <em>*</em></label>
+          <textarea id="message" name="message" rows="4" placeholder="희망하시는 수업, 대상 연령, 일정 등을 남겨주세요."></textarea>
+          <span class="error-msg" id="err-message"></span>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">문의 보내기</button>
+        <p class="form-note" id="formNote"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <span>© 2026 조인식. All rights reserved.</span>
+    <span class="footer-note">이 페이지는 예시 콘텐츠로 제작되었습니다.</span>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
