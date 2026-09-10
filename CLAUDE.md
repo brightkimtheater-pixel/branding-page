@@ -1,4 +1,4 @@
-# 조인식 선생님 랜딩페이지
+# 김빛난 선생님 랜딩페이지
 
 개인 브랜딩 랜딩페이지 (index.html, about.html, services.html, reviews.html, contact.html + style.css, script.js).
 
